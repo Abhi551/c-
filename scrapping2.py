@@ -1,17 +1,24 @@
+#scrapping flipkart in python 2
 from bs4 import BeautifulSoup as soup 
 from urllib2 import urlopen
 
 url="https://www.flipkart.com/search?q=iphone%206&otracker=start&as-show=on&as=off"
+
 client=urlopen(url)
 html=client.read()
 client.close()
+
 html_page=soup(html,'html.parser')
+
 containers=html_page.findAll('div',{'class':"col _2-gKeQ"})
 print len(containers)
+
 filename="scrapping.csv"
 f=open(filename,'w')
 headers="product_name , product_price ,product_rating"
+
 f.write(headers)
+
 for container in containers:
 	#print container.div.img['alt']
 	name_container=container.div.a.findAll("div",{"class":"_3BTv9X"})[0]
@@ -24,6 +31,7 @@ for container in containers:
 	print "price of the product \t",product_price
 	print  "rating of the product \t",rating_container
 	f.write(product_name.replace(',',"|")+","+product_price.replace(",",'|')+","+rating_container.replace(',',"|")+"\n")
+
 f.close()
 
 
